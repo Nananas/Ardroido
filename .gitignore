@@ -1,0 +1,13 @@
+gen/
+res/drawable-*
+res/menu
+res/layout/fragment_*
+res/values*/
+.classpath
+.project
+bin/
+ic_launcher-web.png
+libs/
+.settings/
+project.properties
+proguard-project.txt
