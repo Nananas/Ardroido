@@ -32,6 +32,26 @@
                 android:text="Left"
                 android:textSize="30sp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.46"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/laserAan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fire" />
+
+                <Button
+                    android:id="@+id/laserPos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Laser" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/buttonright"
                 android:layout_width="wrap_content"

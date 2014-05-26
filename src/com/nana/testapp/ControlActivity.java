@@ -37,10 +37,12 @@ public class ControlActivity extends ActionBarActivity {
 	private Handler mHandler = new Handler();
 	
 	static final int MAXSPEED = 10;
-	static final int THRESHOLD = 1;
+	static final int THRESHOLD = 3;
 	
 	Button buttonR;
 	Button buttonL;
+	Button buttonLaser;
+	Button buttonFire;
 	
 	TextView textview;
 	
@@ -79,15 +81,19 @@ public class ControlActivity extends ActionBarActivity {
         
         buttonR = (Button) findViewById(R.id.buttonright);
     	buttonL = (Button) findViewById(R.id.buttonleft);
+    	buttonLaser = (Button) findViewById(R.id.laserPos);
+    	buttonFire = (Button) findViewById(R.id.laserAan);
     	
     	textview = (TextView) findViewById(R.id.textview);
     	
-    	output = new char[5];
+    	output = new char[8];
     	output[0] = '0';
     	output[1] = '0';
     	output[2] = '0';
     	output[3] = '0';
-    	output[4] = 'e';
+    	output[4] = '0';
+    	output[5] = '0';
+    	output[6] = 'e';
     	
     	// update textview message
     	updateOutput();
@@ -128,6 +134,7 @@ public class ControlActivity extends ActionBarActivity {
 	        				output[2]='0';
 	        				output[3]='0';
 	        			}
+	        			
 	        			
 	        			// update textview message
 	        			updateOutput();
@@ -183,6 +190,8 @@ public class ControlActivity extends ActionBarActivity {
 		    				output[0]='0';
 		    				output[1]='0';
 		    			}
+	        			
+	        			
 		    			
 		    			updateOutput();
 		    			
@@ -200,6 +209,84 @@ public class ControlActivity extends ActionBarActivity {
     			return true;
     		}
     	});
+    	
+    	buttonLaser.setOnTouchListener(new View.OnTouchListener()
+    	{
+    		public boolean onTouch(View v, MotionEvent e)
+    		{
+    			switch(e.getAction())
+    			{
+	    			case MotionEvent.ACTION_DOWN:
+	    			case MotionEvent.ACTION_MOVE:
+	    				// ratio
+	        			float dy = e.getY() - buttonLaser.getHeight()/2;
+	        			float dydH = - dy/(buttonLaser.getHeight()/2);
+	        			
+	        			int speedLaser = (int) Math.round(dydH * MAXSPEED);
+	        			
+	        			// dont go past maximum speed;
+	        			if (speedLaser >= MAXSPEED) speedLaser = MAXSPEED-1;
+	        			if (speedLaser <= -MAXSPEED) speedLaser = -MAXSPEED+1;
+	        			
+	
+	        			// calculate 3th & 4th byte to send
+	        			if (speedLaser > THRESHOLD) 	// moving forward
+	        			{
+	        				output[4]='1';
+	        			}
+	        			else if (speedLaser < THRESHOLD) // moving backward
+	        			{
+	        				output[4]='-';
+	        			}
+	        			else 	// not moving
+	        			{
+	        				output[4]='0';
+	        			}
+	        			
+	        			// update textview message
+	        			updateOutput();
+	        			
+	        			break;
+	    			case MotionEvent.ACTION_UP:
+	    				// set output back to zero
+	    				output[4] = '0';
+	    				output[5]= '0';
+	    				
+	    				updateOutput();
+	    				
+	    				break;
+    			}
+    			
+    			return true;
+    		}
+    	});
+    	
+    	buttonFire.setOnTouchListener(new View.OnTouchListener()
+    	{
+    		public boolean onTouch(View v, MotionEvent e)
+    		{
+    			switch(e.getAction())
+    			{
+	    			case MotionEvent.ACTION_DOWN:
+	    				
+	    			case MotionEvent.ACTION_MOVE:
+	    				output[5]='1';
+	    				
+	    				updateOutput();
+	    				break;
+	    			case MotionEvent.ACTION_UP:
+	    				// set output back to zero
+	    				output[5]= '0';
+	    				
+	    				updateOutput();
+	    				
+	    				break;
+    			}
+    			
+    			return true;
+    		}
+    	});
+    	
     	
     	/*
     	 * STARTUP here --------------

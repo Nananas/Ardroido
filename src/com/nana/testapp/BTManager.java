@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -27,6 +25,8 @@ public class BTManager extends Thread {
 	private ProgressDialog progressDialog;
 	
 	private boolean stopMe;
+	private int timeoutTimer;
+	private int timeoutTime = 20;
 	
 	public BTManager (BluetoothDevice device, char[] outputRef, ProgressDialog progDialog)
 	{
@@ -44,6 +44,7 @@ public class BTManager extends Thread {
 		
 		} catch (IOException e) {
 			System.out.print("Something went wrong here, sorry");
+			disablePopup();
 		}
 		
 		mmSocket = tmp;
@@ -130,5 +131,11 @@ public class BTManager extends Thread {
 		
 		// stop thread
 		stopMe = true;
+		disablePopup();
+	}
+	
+	private void disablePopup()
+	{
+		progressDialog.dismiss();
 	}
 }
